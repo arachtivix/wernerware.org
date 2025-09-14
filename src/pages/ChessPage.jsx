@@ -1,26 +1,53 @@
-import Chessboard from '../components/Chessboard'
+import { Link } from 'react-router-dom'
 import './ChessPage.css'
 
 function ChessPage() {
-  // FEN for Knight and Rook vs King endgame position
-  // White: King on e1, Rook on a1, Knight on b1
-  // Black: King on e8
-  const endgameFEN = "4k3/8/8/8/8/8/8/RN2K3 w - - 0 1"
-
   return (
     <div className="chess-page">
       <div className="chess-content">
-        <h1>Chess Endgame: Knight and Rook vs King</h1>
+        <h1>Chess</h1>
         <p className="chess-description">
-          This is a classic chess endgame position featuring a Knight and Rook against a solo King.
-          This endgame is generally winning for the side with the pieces, though it requires proper technique.
+          Explore the mathematical and computational aspects of chess through three main areas
+          of study: combinatorial game theory applications, endgame analysis, and state space
+          enumeration.
         </p>
-        <Chessboard fen={endgameFEN} />
-        <div className="position-info">
-          <h3>Position Details</h3>
-          <p><strong>FEN:</strong> {endgameFEN}</p>
-          <p><strong>Material:</strong> White has a significant material advantage</p>
-          <p><strong>Evaluation:</strong> White is winning with best play</p>
+        
+        <div className="chess-sections">
+          <div className="chess-section-card">
+            <h2>
+              <Link to="/chess/combinatorial-games" className="section-link">
+                Chess-like Combinatorial Games
+              </Link>
+            </h2>
+            <p>
+              Explore chess variants and modifications that provide insights into combinatorial
+              game theory, strategic complexity, and mathematical game analysis.
+            </p>
+          </div>
+
+          <div className="chess-section-card">
+            <h2>
+              <Link to="/chess/endgames" className="section-link">
+                Endgames
+              </Link>
+            </h2>
+            <p>
+              Study classical chess endgames, theoretical positions, and the mathematical
+              principles that govern play with reduced material.
+            </p>
+          </div>
+
+          <div className="chess-section-card">
+            <h2>
+              <Link to="/chess/game-states" className="section-link">
+                Counting Game States
+              </Link>
+            </h2>
+            <p>
+              Investigate the combinatorial complexity of chess through position counting,
+              game tree analysis, and computational approaches to chess complexity.
+            </p>
+          </div>
         </div>
       </div>
     </div>
