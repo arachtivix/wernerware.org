@@ -14,23 +14,30 @@ describe('App', () => {
     const heading = screen.getByRole('heading', { name: /wernerware/i, level: 1 })
     expect(heading).toBeInTheDocument()
     
-    const comingSoon = screen.getByText(/coming soon/i)
-    expect(comingSoon).toBeInTheDocument()
+    const introText = screen.getByText(/welcome to a site dedicated to the exploration/i)
+    expect(introText).toBeInTheDocument()
   })
 
   it('renders navigation links', () => {
     render(<App />)
     
     const homeLink = screen.getByRole('link', { name: /home/i })
-    const chessLink = screen.getByRole('link', { name: /chess/i })
+    // Get the navigation chess link specifically by checking for the /chess href
+    const navLinks = screen.getAllByRole('link', { name: /chess/i })
+    const chessNavLink = navLinks.find(link => link.getAttribute('href') === '/chess')
     
     expect(homeLink).toBeInTheDocument()
-    expect(chessLink).toBeInTheDocument()
+    expect(chessNavLink).toBeInTheDocument()
   })
 
-  it('renders description text on home page', () => {
+  it('renders combinatorial game theory content on home page', () => {
     render(<App />)
-    const description = screen.getByText(/a clean, modern web presence/i)
-    expect(description).toBeInTheDocument()
+    const gameTheoryLink = screen.getByRole('link', { name: /combinatorial game theory/i })
+    expect(gameTheoryLink).toBeInTheDocument()
+    expect(gameTheoryLink).toHaveAttribute('href', 'https://en.wikipedia.org/wiki/Combinatorial_game_theory')
+    
+    // Check for the chess Wikipedia link specifically
+    const wikipediaChessLink = screen.getByText('chess')
+    expect(wikipediaChessLink.closest('a')).toHaveAttribute('href', 'https://en.wikipedia.org/wiki/Chess')
   })
 })
