@@ -1,0 +1,58 @@
+.home-page {
+  padding-top: 5rem; /* Account for fixed navigation */
+  min-height: calc(100vh - 4rem);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.home-content {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  padding: 3rem 2rem;
+  border-radius: 20px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+  max-width: 600px;
+  width: 90%;
+  text-align: center;
+}
+
+.home-content h1 {
+  font-size: 3.5rem;
+  margin: 0 0 1rem 0;
+  font-weight: 300;
+  letter-spacing: 2px;
+}
+
+.home-content p {
+  font-size: 1.2rem;
+  margin: 0.5rem 0;
+  opacity: 0.9;
+}
+
+.contact-info {
+  margin-top: 2rem;
+  padding-top: 2rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.contact-info p {
+  font-size: 1rem;
+  font-weight: 300;
+}
+
+@media (max-width: 768px) {
+  .home-page {
+    padding-top: 4rem;
+  }
+  
+  .home-content {
+    padding: 2rem 1rem;
+    margin: 1rem;
+  }
+  
+  .home-content h1 {
+    font-size: 2.5rem;
+  }
+}
