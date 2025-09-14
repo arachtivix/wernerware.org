@@ -31,6 +31,85 @@
   margin-right: auto;
 }
 
+.chess-sections {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 2rem;
+  margin-top: 3rem;
+}
+
+.chess-section-card {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 15px;
+  padding: 2rem;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  transition: all 0.3s ease;
+  text-align: left;
+}
+
+.chess-section-card:hover {
+  transform: translateY(-5px);
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+.chess-section-card h2 {
+  margin-bottom: 1rem;
+  font-size: 1.4rem;
+  font-weight: 400;
+}
+
+.section-link {
+  color: #667eea;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.section-link:hover {
+  color: #764ba2;
+  text-decoration: underline;
+}
+
+.chess-section-card p {
+  font-size: 0.95rem;
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.8);
+  margin: 0;
+}
+
+.endgame-example {
+  margin-top: 2rem;
+}
+
+.endgame-example h2 {
+  color: #667eea;
+  margin-bottom: 1rem;
+  font-size: 1.8rem;
+  font-weight: 400;
+}
+
+.subsection {
+  margin-top: 2rem;
+  padding: 1.5rem;
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  text-align: left;
+}
+
+.subsection h3 {
+  color: #764ba2;
+  margin-bottom: 1rem;
+  font-size: 1.3rem;
+}
+
+.subsection p {
+  margin: 0;
+  font-size: 0.95rem;
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.85);
+}
+
 .position-info {
   margin-top: 2rem;
   padding: 1.5rem;
@@ -77,7 +156,21 @@
     font-size: 1rem;
   }
   
+  .chess-sections {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+    margin-top: 2rem;
+  }
+  
+  .chess-section-card {
+    padding: 1.5rem;
+  }
+  
   .position-info {
+    padding: 1rem;
+  }
+  
+  .subsection {
     padding: 1rem;
   }
 }
@@ -88,6 +181,36 @@
   }
   
   .chess-description {
+    color: #4a4a4a;
+  }
+  
+  .chess-section-card {
+    background: rgba(0, 0, 0, 0.02);
+    border: 1px solid rgba(0, 0, 0, 0.1);
+  }
+  
+  .chess-section-card:hover {
+    background: rgba(0, 0, 0, 0.05);
+  }
+  
+  .chess-section-card p {
+    color: #5a5a5a;
+  }
+  
+  .endgame-example h2 {
+    color: #5a5a5a;
+  }
+  
+  .subsection {
+    background: rgba(0, 0, 0, 0.01);
+    border: 1px solid rgba(0, 0, 0, 0.05);
+  }
+  
+  .subsection h3 {
+    color: #764ba2;
+  }
+  
+  .subsection p {
     color: #4a4a4a;
   }
   
