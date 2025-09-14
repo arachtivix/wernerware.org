@@ -15,21 +15,24 @@ function ChessGameStatesPage() {
         <div className="subsection">
           <h3>Position Counting</h3>
           <p>
-            Chess has an estimated 10⁴⁰ to 10⁵⁰ possible positions, making exhaustive analysis
-            computationally impossible. However, by categorizing positions by material balance,
-            pawn structure, and piece activity, we can develop meaningful statistical measures
-            and strategic guidelines for different types of positions.
+            Chess has an estimated 10⁴⁰ to 10⁵⁰ possible positions (Shannon, 1950; de Bruin, 1963), 
+            making exhaustive analysis computationally impossible. However, the intent is to find 
+            smaller positions whose state count may be more limited and thus may be more amenable 
+            to computational analysis. By categorizing positions by material balance, pawn structure, 
+            and piece activity, we can develop meaningful statistical measures and strategic 
+            guidelines for different types of positions.
           </p>
         </div>
 
         <div className="subsection">
           <h3>Game Tree Complexity</h3>
           <p>
-            The game tree complexity of chess is approximately 10¹²³, representing the number
-            of possible games. This enormous branching factor necessitates sophisticated
+            The game tree complexity of chess is approximately 10¹²³ (Allis, 1994), representing 
+            the number of possible games. This enormous branching factor necessitates sophisticated
             pruning techniques and heuristic evaluation methods in computer chess programs.
             Understanding these numbers helps in appreciating both the richness of chess
-            and the computational challenges it presents.
+            and the computational challenges it presents, while motivating the search for 
+            smaller, more tractable subsets of positions for detailed analysis.
           </p>
         </div>
 
