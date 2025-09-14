@@ -15,21 +15,24 @@ function ChessGameStatesPage() {
         <div className="subsection">
           <h3>Position Counting</h3>
           <p>
-            Chess has an estimated 10⁴⁰ to 10⁵⁰ possible positions, making exhaustive analysis
-            computationally impossible. However, by categorizing positions by material balance,
-            pawn structure, and piece activity, we can develop meaningful statistical measures
-            and strategic guidelines for different types of positions.
+            Chess has an estimated 10⁴⁰ to 10⁵⁰ possible positions (<a href="https://www.cs.virginia.edu/~evans/greatworks/shannon1950.pdf" target="_blank" rel="noopener noreferrer">Shannon, 1950</a>; <a href="https://repository.tudelft.nl/islandora/object/uuid:2b24f18e-5d37-4aef-a3fb-d1e86b08f14c" target="_blank" rel="noopener noreferrer">de Bruin, 1963</a>), 
+            making exhaustive analysis computationally impossible. However, the intent is to find 
+            smaller positions whose state count may be more limited and thus may be more amenable 
+            to computational analysis. By categorizing positions by material balance, pawn structure, 
+            and piece activity, we can develop meaningful statistical measures and strategic 
+            guidelines for different types of positions.
           </p>
         </div>
 
         <div className="subsection">
           <h3>Game Tree Complexity</h3>
           <p>
-            The game tree complexity of chess is approximately 10¹²³, representing the number
-            of possible games. This enormous branching factor necessitates sophisticated
+            The game tree complexity of chess is approximately 10¹²³ (<a href="https://project.dke.maastrichtuniversity.nl/games/files/phd/Allis_thesis.pdf" target="_blank" rel="noopener noreferrer">Allis, 1994</a>), representing 
+            the number of possible games. This enormous branching factor necessitates sophisticated
             pruning techniques and heuristic evaluation methods in computer chess programs.
             Understanding these numbers helps in appreciating both the richness of chess
-            and the computational challenges it presents.
+            and the computational challenges it presents, while motivating the search for 
+            smaller, more tractable subsets of positions for detailed analysis.
           </p>
         </div>
 
