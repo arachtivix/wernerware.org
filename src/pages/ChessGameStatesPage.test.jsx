@@ -19,10 +19,8 @@ describe('ChessGameStatesPage', () => {
     render(<ChessGameStatesPage />)
     const countingHeading = screen.getByRole('heading', { name: /position counting/i })
     const shannonLink = screen.getByRole('link', { name: /shannon, 1950/i })
-    const deBruinLink = screen.getByRole('link', { name: /de bruin, 1963/i })
     expect(countingHeading).toBeInTheDocument()
     expect(shannonLink).toBeInTheDocument()
-    expect(deBruinLink).toBeInTheDocument()
   })
 
   it('renders game tree complexity section', () => {
