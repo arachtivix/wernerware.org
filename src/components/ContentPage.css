@@ -1,0 +1,260 @@
+/* ContentPage styles */
+.content-page {
+  padding-top: 5rem; /* Account for fixed navigation */
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+/* Import chess-specific styles for backwards compatibility */
+.endgame-example {
+  margin-top: 2rem;
+}
+
+.endgame-example h2 {
+  color: #667eea;
+  margin-bottom: 1rem;
+  font-size: 1.8rem;
+  font-weight: 400;
+}
+
+.position-info {
+  margin-top: 2rem;
+  padding: 1.5rem;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  text-align: left;
+  max-width: 500px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.position-info h3 {
+  color: #764ba2;
+  margin-bottom: 1rem;
+  font-size: 1.3rem;
+}
+
+.position-info p {
+  margin: 0.5rem 0;
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+.position-info strong {
+  color: rgba(255, 255, 255, 0.95);
+  font-weight: 600;
+}
+
+.content-page-standard {
+  /* Standard page styles */
+}
+
+.content-page-chess {
+  /* Chess-specific page styles */
+}
+
+.content-page-home {
+  /* Home page specific styles */
+  min-height: calc(100vh - 4rem);
+  align-items: center;
+}
+
+.content-page-wrapper {
+  max-width: 800px;
+  width: 100%;
+  padding: 2rem;
+  text-align: center;
+}
+
+.content-page-home .content-page-wrapper {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  padding: 3rem 2rem;
+  border-radius: 20px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+  width: 90%;
+  text-align: left;
+}
+
+.content-page h1 {
+  color: #667eea;
+  margin-bottom: 1.5rem;
+  font-size: 2.5rem;
+  font-weight: 300;
+  letter-spacing: 1px;
+}
+
+.content-page-home h1 {
+  font-size: 3.5rem;
+  margin: 0 0 1rem 0;
+  font-weight: 300;
+  letter-spacing: 2px;
+  text-align: center;
+  color: white;
+}
+
+.content-page-description {
+  font-size: 1.1rem;
+  line-height: 1.6;
+  margin-bottom: 2rem;
+  color: rgba(255, 255, 255, 0.9);
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.content-page-home .content-page-description {
+  font-size: 1.3rem;
+  text-align: center;
+  margin-bottom: 2rem;
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.9);
+  max-width: none;
+  margin-left: 0;
+  margin-right: 0;
+}
+
+.content-card-sections {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 2rem;
+  margin-top: 3rem;
+}
+
+.content-card-item {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 15px;
+  padding: 2rem;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  transition: all 0.3s ease;
+  text-align: left;
+}
+
+.content-card-item:hover {
+  transform: translateY(-5px);
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+.content-card-item h2 {
+  margin-bottom: 1rem;
+  font-size: 1.4rem;
+  font-weight: 400;
+}
+
+.content-card-item p {
+  font-size: 0.95rem;
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.8);
+  margin: 0;
+}
+
+.section-link {
+  color: #667eea;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.section-link:hover {
+  color: #764ba2;
+  text-decoration: underline;
+}
+
+/* Links within content */
+.content-page-wrapper a {
+  color: #87ceeb;
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  transition: border-bottom-color 0.3s ease;
+}
+
+.content-page-wrapper a:hover {
+  border-bottom-color: #87ceeb;
+}
+
+.content-page-home .content-page-wrapper a {
+  color: #87ceeb;
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  transition: border-bottom-color 0.3s ease;
+}
+
+.content-page-home .content-page-wrapper a:hover {
+  border-bottom-color: #87ceeb;
+}
+
+@media (max-width: 768px) {
+  .content-page {
+    padding-top: 4rem;
+  }
+  
+  .content-page-wrapper {
+    padding: 1rem;
+  }
+  
+  .content-page-home .content-page-wrapper {
+    padding: 2rem 1rem;
+    margin: 1rem;
+  }
+  
+  .content-page h1 {
+    font-size: 2rem;
+  }
+  
+  .content-page-home h1 {
+    font-size: 2.5rem;
+  }
+  
+  .content-page-description {
+    font-size: 1rem;
+  }
+  
+  .content-card-sections {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+    margin-top: 2rem;
+  }
+  
+  .content-card-item {
+    padding: 1.5rem;
+  }
+}
+
+@media (prefers-color-scheme: light) {
+  .content-page h1 {
+    color: #5a5a5a;
+  }
+  
+  .content-page-description {
+    color: #4a4a4a;
+  }
+  
+  .content-card-item {
+    background: rgba(0, 0, 0, 0.02);
+    border: 1px solid rgba(0, 0, 0, 0.1);
+  }
+  
+  .content-card-item:hover {
+    background: rgba(0, 0, 0, 0.05);
+  }
+  
+  .position-info {
+    background: rgba(0, 0, 0, 0.02);
+    border: 1px solid rgba(0, 0, 0, 0.1);
+  }
+  
+  .position-info h3 {
+    color: #764ba2;
+  }
+  
+  .position-info strong {
+    color: #2a2a2a;
+  }
+  
+  .endgame-example h2 {
+    color: #5a5a5a;
+  }
+}
