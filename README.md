@@ -8,6 +8,7 @@ A clean, modern React website for WernerWare - coming soon placeholder with auto
 
 - Clean, responsive design with modern gradient styling
 - React 19 with Vite for fast development and builds
+- Chess board visualization using SVG generated with chess-variants-display library approach
 - Comprehensive test suite with Vitest and React Testing Library
 - Automated CI/CD pipeline with GitHub Actions
 - Deployment to AWS S3 with optional CloudFront invalidation
@@ -43,7 +44,26 @@ npm run preview
 
 # Lint code
 npm run lint
+
+# Generate chess board SVGs
+npm run generate-chessboards
 ```
+
+### Chess Board Generation
+
+The project includes a build step that generates SVG chess boards from FEN notation using an approach inspired by the [chess-variants-display](https://github.com/arachtivix/chess-variants-display/releases/tag/v0.0.46) Clojure library.
+
+**How it works:**
+1. The `scripts/generate-chessboards.js` script reads FEN positions defined in the code
+2. It generates responsive SVG files for each position and saves them to `public/chessboards/`
+3. The React components load these pre-generated SVGs for optimal performance
+4. The build process automatically runs this script before building the application
+
+**Adding new chess positions:**
+1. Add the FEN notation to the `fenPositions` object in `scripts/generate-chessboards.js`
+2. Map the FEN to the SVG filename in `src/components/Chessboard.jsx`
+3. Run `npm run generate-chessboards` to create the SVG
+4. The component will automatically use the new board
 
 ## Deployment
 
@@ -63,9 +83,10 @@ The GitHub Actions workflow:
 1. Runs on push to main branch and pull requests
 2. Installs dependencies
 3. Runs linter and tests
-4. Builds the React application
-5. Deploys to S3 (main branch only)
-6. Optionally invalidates CloudFront cache
+4. Generates chess board SVGs
+5. Builds the React application
+6. Deploys to S3 (main branch only)
+7. Optionally invalidates CloudFront cache
 
 ### AWS Permissions
 

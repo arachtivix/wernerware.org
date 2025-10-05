@@ -8,7 +8,8 @@
   },
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
+    "build": "npm run generate-chessboards && vite build",
+    "generate-chessboards": "node scripts/generate-chessboards.js",
     "lint": "eslint .",
     "preview": "vite preview",
     "test": "vitest",

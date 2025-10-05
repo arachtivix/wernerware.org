@@ -1,8 +1,25 @@
-import { render, screen } from '@testing-library/react'
-import { describe, it, expect } from 'vitest'
+import { render, screen, waitFor } from '@testing-library/react'
+import { describe, it, expect, beforeEach, vi } from 'vitest'
 import ChessEndgamesPage from '../pages/ChessEndgamesPage'
 
+// Mock SVG content for testing
+const mockSVG = `<svg width="100%" height="100%" viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+<text x="225" y="25" class="chess-piece">♚</text>
+<text x="25" y="375" class="chess-piece">♖</text>
+<text x="75" y="375" class="chess-piece">♘</text>
+<text x="225" y="375" class="chess-piece">♔</text>
+</svg>`
+
 describe('ChessEndgamesPage', () => {
+  beforeEach(() => {
+    // Mock fetch to return SVG content
+    globalThis.fetch = vi.fn(() =>
+      Promise.resolve({
+        text: () => Promise.resolve(mockSVG),
+      })
+    )
+  })
+
   it('renders chess endgames heading', () => {
     render(<ChessEndgamesPage />)
     const heading = screen.getByRole('heading', { name: /chess endgames/i })
@@ -36,11 +53,13 @@ describe('ChessEndgamesPage', () => {
     expect(evaluationLabel).toBeInTheDocument()
   })
 
-  it('renders chessboard with pieces', () => {
+  it('renders chessboard with pieces', async () => {
     render(<ChessEndgamesPage />)
-    // Check if chess pieces are present
-    const pieces = screen.getAllByText(/[♔♕♖♗♘♙♚♛♜♝♞♟]/)
-    expect(pieces.length).toBeGreaterThan(0)
+    // Wait for the SVG to load and check if chess pieces are present
+    await waitFor(() => {
+      const pieces = screen.getAllByText(/[♔♕♖♗♘♙♚♛♜♝♞♟]/)
+      expect(pieces.length).toBeGreaterThan(0)
+    })
   })
 
   it('renders endgame theory section', () => {

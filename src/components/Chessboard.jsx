@@ -1,64 +1,54 @@
 import './Chessboard.css'
+import { useEffect, useState } from 'react'
 
-// Piece symbols for different pieces
-const PIECES = {
-  'K': '♔', 'Q': '♕', 'R': '♖', 'B': '♗', 'N': '♘', 'P': '♙',
-  'k': '♚', 'q': '♛', 'r': '♜', 'b': '♝', 'n': '♞', 'p': '♟'
+// Map FEN positions to pre-generated SVG files
+// Generated using chess-variants-display library approach
+// https://github.com/arachtivix/chess-variants-display/releases/tag/v0.0.46
+const FEN_TO_SVG = {
+  '4k3/8/8/8/8/8/8/RN2K3 w - - 0 1': '/chessboards/endgame-rook-knight-vs-king.svg'
 }
 
 function Chessboard({ fen }) {
-  // Parse FEN notation to get board position
-  const parseFEN = (fen) => {
-    const [boardPart] = fen.split(' ')
-    const ranks = boardPart.split('/')
-    const board = []
+  const [svgContent, setSvgContent] = useState(null)
+  const svgPath = FEN_TO_SVG[fen]
+  
+  useEffect(() => {
+    if (!svgPath) return
     
-    for (let rank of ranks) {
-      const row = []
-      for (let char of rank) {
-        if (isNaN(char)) {
-          // It's a piece
-          row.push(char)
-        } else {
-          // It's a number indicating empty squares
-          const emptySquares = parseInt(char)
-          for (let i = 0; i < emptySquares; i++) {
-            row.push('')
-          }
-        }
-      }
-      board.push(row)
-    }
-    
-    return board
+    // Fetch and inline the SVG so CSS styling works
+    fetch(svgPath)
+      .then(response => response.text())
+      .then(svg => setSvgContent(svg))
+      .catch(error => console.error('Error loading chessboard SVG:', error))
+  }, [svgPath])
+  
+  if (!svgPath) {
+    console.warn(`No pre-generated SVG found for FEN: ${fen}`)
+    return (
+      <div className="chessboard-container">
+        <div className="chessboard-error">
+          Chessboard not available for this position
+        </div>
+      </div>
+    )
   }
 
-  const board = parseFEN(fen)
-
-  const renderSquare = (piece, rank, file) => {
-    const isLightSquare = (rank + file) % 2 === 0
-    const squareClass = `square ${isLightSquare ? 'light' : 'dark'}`
-    
+  if (!svgContent) {
     return (
-      <div key={`${rank}-${file}`} className={squareClass}>
-        {piece && (
-          <span className={`piece ${piece === piece.toUpperCase() ? 'white' : 'black'}`}>
-            {PIECES[piece]}
-          </span>
-        )}
+      <div className="chessboard-container">
+        <div className="chessboard">
+          <div className="chessboard-loading">Loading...</div>
+        </div>
       </div>
     )
   }
 
   return (
     <div className="chessboard-container">
-      <div className="chessboard">
-        {board.map((rank, rankIndex) =>
-          rank.map((piece, fileIndex) =>
-            renderSquare(piece, rankIndex, fileIndex)
-          )
-        )}
-      </div>
+      <div 
+        className="chessboard"
+        dangerouslySetInnerHTML={{ __html: svgContent }}
+      />
     </div>
   )
 }
