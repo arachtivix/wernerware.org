@@ -22,14 +22,15 @@ describe('Chessboard', () => {
 
   it('renders 64 squares', () => {
     const { container } = render(<Chessboard fen={testFEN} />)
-    const squares = container.querySelectorAll('.square')
+    // SVG-based implementation uses rect elements for squares
+    const squares = container.querySelectorAll('rect')
     expect(squares).toHaveLength(64)
   })
 
   it('has alternating light and dark squares', () => {
     const { container } = render(<Chessboard fen={testFEN} />)
-    const lightSquares = container.querySelectorAll('.square.light')
-    const darkSquares = container.querySelectorAll('.square.dark')
+    const lightSquares = container.querySelectorAll('.light-square')
+    const darkSquares = container.querySelectorAll('.dark-square')
     
     expect(lightSquares).toHaveLength(32)
     expect(darkSquares).toHaveLength(32)

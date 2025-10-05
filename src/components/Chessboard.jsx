@@ -1,64 +1,119 @@
 import './Chessboard.css'
 
-// Piece symbols for different pieces
-const PIECES = {
+// Piece Unicode characters (based on chess-variants-display v0.0.46)
+const PIECE_UNICODE = {
   'K': '♔', 'Q': '♕', 'R': '♖', 'B': '♗', 'N': '♘', 'P': '♙',
   'k': '♚', 'q': '♛', 'r': '♜', 'b': '♝', 'n': '♞', 'p': '♟'
 }
 
+/**
+ * Chessboard component that renders an SVG-based chessboard
+ * Implementation based on chess-variants-display v0.0.46
+ * https://github.com/arachtivix/chess-variants-display
+ */
 function Chessboard({ fen }) {
-  // Parse FEN notation to get board position
+  const SQUARE_SIZE = 50
+  const BOARD_WIDTH = 8
+  const BOARD_HEIGHT = 8
+  
+  // Parse FEN notation to get piece positions
+  // Returns a map of [row, col] -> piece character
   const parseFEN = (fen) => {
     const [boardPart] = fen.split(' ')
     const ranks = boardPart.split('/')
-    const board = []
+    const pieces = {}
     
-    for (let rank of ranks) {
-      const row = []
-      for (let char of rank) {
+    for (let rankIndex = 0; rankIndex < ranks.length; rankIndex++) {
+      let fileIndex = 0
+      for (let char of ranks[rankIndex]) {
         if (isNaN(char)) {
           // It's a piece
-          row.push(char)
+          pieces[`${rankIndex},${fileIndex}`] = char
+          fileIndex++
         } else {
           // It's a number indicating empty squares
-          const emptySquares = parseInt(char)
-          for (let i = 0; i < emptySquares; i++) {
-            row.push('')
-          }
+          fileIndex += parseInt(char)
         }
       }
-      board.push(row)
     }
     
-    return board
+    return pieces
   }
 
-  const board = parseFEN(fen)
+  const pieces = parseFEN(fen)
+  const svgWidth = BOARD_WIDTH * SQUARE_SIZE
+  const svgHeight = BOARD_HEIGHT * SQUARE_SIZE
 
-  const renderSquare = (piece, rank, file) => {
-    const isLightSquare = (rank + file) % 2 === 0
-    const squareClass = `square ${isLightSquare ? 'light' : 'dark'}`
+  // Generate squares (based on checkerboard function from chess-variants-display)
+  const renderSquares = () => {
+    const squares = []
+    const topLeftColor = 'dark' // Standard chess board has dark top-left square
     
-    return (
-      <div key={`${rank}-${file}`} className={squareClass}>
-        {piece && (
-          <span className={`piece ${piece === piece.toUpperCase() ? 'white' : 'black'}`}>
-            {PIECES[piece]}
-          </span>
-        )}
-      </div>
-    )
+    for (let row = 0; row < BOARD_HEIGHT; row++) {
+      for (let col = 0; col < BOARD_WIDTH; col++) {
+        const isEvenSum = (row + col) % 2 === 0
+        const isDark = topLeftColor === 'dark' ? isEvenSum : !isEvenSum
+        const x = col * SQUARE_SIZE
+        const y = row * SQUARE_SIZE
+        const className = isDark ? 'dark-square' : 'light-square'
+        
+        squares.push(
+          <rect
+            key={`square-${row}-${col}`}
+            x={x}
+            y={y}
+            width={SQUARE_SIZE}
+            height={SQUARE_SIZE}
+            className={className}
+          />
+        )
+      }
+    }
+    
+    return squares
+  }
+
+  // Generate piece elements (based on checkerboard-with-pieces from chess-variants-display)
+  const renderPieces = () => {
+    const pieceElements = []
+    
+    for (let [position, pieceChar] of Object.entries(pieces)) {
+      const [row, col] = position.split(',').map(Number)
+      const x = col * SQUARE_SIZE
+      const y = row * SQUARE_SIZE
+      const textX = x + SQUARE_SIZE / 2
+      const textY = y + SQUARE_SIZE / 2
+      const unicodeChar = PIECE_UNICODE[pieceChar]
+      
+      pieceElements.push(
+        <text
+          key={`piece-${row}-${col}`}
+          x={textX}
+          y={textY}
+          className="chess-piece"
+          textAnchor="middle"
+          dominantBaseline="central"
+        >
+          {unicodeChar}
+        </text>
+      )
+    }
+    
+    return pieceElements
   }
 
   return (
     <div className="chessboard-container">
-      <div className="chessboard">
-        {board.map((rank, rankIndex) =>
-          rank.map((piece, fileIndex) =>
-            renderSquare(piece, rankIndex, fileIndex)
-          )
-        )}
-      </div>
+      <svg
+        width="100%"
+        height="100%"
+        viewBox={`0 0 ${svgWidth} ${svgHeight}`}
+        xmlns="http://www.w3.org/2000/svg"
+        className="chessboard"
+      >
+        {renderSquares()}
+        {renderPieces()}
+      </svg>
     </div>
   )
 }

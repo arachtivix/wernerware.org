@@ -1,3 +1,9 @@
+/* 
+ * Chessboard styles for SVG-based rendering
+ * Based on chess-variants-display v0.0.46
+ * https://github.com/arachtivix/chess-variants-display
+ */
+
 .chessboard-container {
   display: flex;
   justify-content: center;
@@ -6,52 +12,30 @@
 }
 
 .chessboard {
-  display: grid;
-  grid-template-columns: repeat(8, 1fr);
-  grid-template-rows: repeat(8, 1fr);
-  width: 400px;
-  height: 400px;
+  max-width: 400px;
+  max-height: 400px;
+  width: 100%;
+  height: auto;
   border: 3px solid #8b4513;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
   border-radius: 4px;
-  overflow: hidden;
 }
 
-.square {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  position: relative;
+/* Square colors - using CSS classes like chess-variants-display */
+.dark-square {
+  fill: #b58863;
+}
+
+.light-square {
+  fill: #f0d9b5;
+}
+
+/* Chess piece styling */
+.chess-piece {
+  font-size: 40px;
+  fill: #000000;
   user-select: none;
-}
-
-.square.light {
-  background-color: #f0d9b5;
-}
-
-.square.dark {
-  background-color: #b58863;
-}
-
-.piece {
-  font-size: 2rem;
-  line-height: 1;
   cursor: default;
-  transition: transform 0.2s ease;
-}
-
-.piece:hover {
-  transform: scale(1.1);
-}
-
-.piece.white {
-  color: #ffffff;
-  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
-}
-
-.piece.black {
-  color: #000000;
-  text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.3);
 }
 
 @media (max-width: 768px) {
@@ -60,22 +44,22 @@
   }
   
   .chessboard {
-    width: 320px;
-    height: 320px;
+    max-width: 320px;
+    max-height: 320px;
   }
   
-  .piece {
-    font-size: 1.6rem;
+  .chess-piece {
+    font-size: 32px;
   }
 }
 
 @media (max-width: 480px) {
   .chessboard {
-    width: 280px;
-    height: 280px;
+    max-width: 280px;
+    max-height: 280px;
   }
   
-  .piece {
-    font-size: 1.4rem;
+  .chess-piece {
+    font-size: 28px;
   }
 }
