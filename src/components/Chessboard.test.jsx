@@ -5,34 +5,29 @@ import Chessboard from '../components/Chessboard'
 describe('Chessboard', () => {
   const testFEN = "4k3/8/8/8/8/8/8/RN2K3 w - - 0 1"
 
-  it('renders chessboard with correct pieces', () => {
-    render(<Chessboard fen={testFEN} />)
+  it('renders chessboard image for known position', () => {
+    const { container } = render(<Chessboard fen={testFEN} />)
     
-    // Check if pieces are rendered
-    const blackKing = screen.getByText('♚')
-    const whiteRook = screen.getByText('♖')
-    const whiteKnight = screen.getByText('♘')
-    const whiteKing = screen.getByText('♔')
-    
-    expect(blackKing).toBeInTheDocument()
-    expect(whiteRook).toBeInTheDocument()
-    expect(whiteKnight).toBeInTheDocument()
-    expect(whiteKing).toBeInTheDocument()
+    // Check if image is rendered
+    const img = container.querySelector('img.chessboard')
+    expect(img).toBeInTheDocument()
+    expect(img).toHaveAttribute('src', '/chessboards/knight-rook-vs-king.svg')
+    expect(img).toHaveAttribute('alt', `Chess position: ${testFEN}`)
   })
 
-  it('renders 64 squares', () => {
-    const { container } = render(<Chessboard fen={testFEN} />)
-    // SVG-based implementation uses rect elements for squares
-    const squares = container.querySelectorAll('rect')
-    expect(squares).toHaveLength(64)
+  it('shows error for unknown position', () => {
+    const unknownFEN = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"
+    render(<Chessboard fen={unknownFEN} />)
+    
+    // Check if error message is shown
+    const errorDiv = screen.getByText(/Chessboard not available for position/)
+    expect(errorDiv).toBeInTheDocument()
   })
 
-  it('has alternating light and dark squares', () => {
+  it('renders chessboard container', () => {
     const { container } = render(<Chessboard fen={testFEN} />)
-    const lightSquares = container.querySelectorAll('.light-square')
-    const darkSquares = container.querySelectorAll('.dark-square')
+    const chessboardContainer = container.querySelector('.chessboard-container')
     
-    expect(lightSquares).toHaveLength(32)
-    expect(darkSquares).toHaveLength(32)
+    expect(chessboardContainer).toBeInTheDocument()
   })
 })

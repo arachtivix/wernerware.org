@@ -1,6 +1,6 @@
 /* 
- * Chessboard styles for SVG-based rendering
- * Based on chess-variants-display v0.0.46
+ * Chessboard styles for displaying SVG files
+ * SVGs generated using chess-variants-display v0.0.46
  * https://github.com/arachtivix/chess-variants-display
  */
 
@@ -19,23 +19,16 @@
   border: 3px solid #8b4513;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
   border-radius: 4px;
+  display: block;
 }
 
-/* Square colors - using CSS classes like chess-variants-display */
-.dark-square {
-  fill: #b58863;
-}
-
-.light-square {
-  fill: #f0d9b5;
-}
-
-/* Chess piece styling */
-.chess-piece {
-  font-size: 40px;
-  fill: #000000;
-  user-select: none;
-  cursor: default;
+.chessboard-error {
+  padding: 2rem;
+  text-align: center;
+  color: #c62828;
+  background: rgba(198, 40, 40, 0.1);
+  border: 1px solid #c62828;
+  border-radius: 4px;
 }
 
 @media (max-width: 768px) {
@@ -47,19 +40,11 @@
     max-width: 320px;
     max-height: 320px;
   }
-  
-  .chess-piece {
-    font-size: 32px;
-  }
 }
 
 @media (max-width: 480px) {
   .chessboard {
     max-width: 280px;
     max-height: 280px;
-  }
-  
-  .chess-piece {
-    font-size: 28px;
   }
 }
