@@ -27,3 +27,7 @@ dist-ssr
 scripts/chess-variants-display/
 scripts/chess-variants-display*.jar
 scripts/temp-gen.clj
+
+# Babashka dependencies cache
+.gitlibs/
+.cpcache/
