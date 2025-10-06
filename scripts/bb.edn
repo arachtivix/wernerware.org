@@ -1,3 +1,4 @@
 {:deps {io.github.arachtivix/chess-variants-display 
         {:git/url "https://github.com/arachtivix/chess-variants-display"
+         :git/sha "d9e513e678ea733e3f5ce8f904c3eae4fbb7b18a"
          :git/tag "v0.0.50"}}}
