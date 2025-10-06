@@ -25,5 +25,5 @@ dist-ssr
 
 # Chess variants display build artifacts
 scripts/chess-variants-display/
-scripts/chess-variants-display.jar
+scripts/chess-variants-display*.jar
 scripts/temp-gen.clj

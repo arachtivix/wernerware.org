@@ -2,7 +2,7 @@
 
 /**
  * Script to generate chessboard SVGs using chess-variants-display tool
- * Downloads the source and generates SVG files for chess positions
+ * Downloads the JAR from GitHub releases and generates SVG files for chess positions
  */
 
 const https = require('https');
@@ -11,8 +11,8 @@ const path = require('path');
 const { execSync } = require('child_process');
 
 const CHESS_VARIANTS_VERSION = '0.0.46';
-const CHESS_VARIANTS_SHA = 'dd1912a50247d72180ec2d6ae726dbbb8e1a2a10';
-const REPO_DIR = path.join(__dirname, 'chess-variants-display');
+const JAR_URL = `https://github.com/arachtivix/chess-variants-display/releases/download/v${CHESS_VARIANTS_VERSION}/chess-variants-display-${CHESS_VARIANTS_VERSION}.jar`;
+const JAR_PATH = path.join(__dirname, `chess-variants-display-${CHESS_VARIANTS_VERSION}.jar`);
 const OUTPUT_DIR = path.join(__dirname, '..', 'public', 'chessboards');
 
 // Chess positions to generate (FEN -> filename)
@@ -21,19 +21,51 @@ const POSITIONS = {
 };
 
 /**
- * Clone or update the chess-variants-display repository
+ * Download the chess-variants-display JAR file from GitHub releases
  */
-function setupRepository() {
-  if (!fs.existsSync(REPO_DIR)) {
-    console.log('Cloning chess-variants-display repository...');
-    execSync(`git clone https://github.com/arachtivix/chess-variants-display.git ${REPO_DIR}`, {
-      stdio: 'inherit'
-    });
+function downloadJar() {
+  if (fs.existsSync(JAR_PATH)) {
+    console.log(`JAR file already exists: ${JAR_PATH}`);
+    return;
   }
   
-  console.log(`Checking out version ${CHESS_VARIANTS_VERSION}...`);
-  execSync(`cd ${REPO_DIR} && git checkout ${CHESS_VARIANTS_SHA}`, {
-    stdio: 'inherit'
+  console.log(`Downloading chess-variants-display v${CHESS_VARIANTS_VERSION} JAR...`);
+  console.log(`From: ${JAR_URL}`);
+  
+  return new Promise((resolve, reject) => {
+    const file = fs.createWriteStream(JAR_PATH);
+    https.get(JAR_URL, (response) => {
+      if (response.statusCode === 302 || response.statusCode === 301) {
+        // Follow redirect
+        https.get(response.headers.location, (redirectResponse) => {
+          if (redirectResponse.statusCode !== 200) {
+            reject(new Error(`Failed to download JAR: ${redirectResponse.statusCode}`));
+            return;
+          }
+          redirectResponse.pipe(file);
+          file.on('finish', () => {
+            file.close();
+            console.log(`JAR downloaded successfully to ${JAR_PATH}`);
+            resolve();
+          });
+        }).on('error', (err) => {
+          fs.unlinkSync(JAR_PATH);
+          reject(err);
+        });
+      } else if (response.statusCode === 200) {
+        response.pipe(file);
+        file.on('finish', () => {
+          file.close();
+          console.log(`JAR downloaded successfully to ${JAR_PATH}`);
+          resolve();
+        });
+      } else {
+        reject(new Error(`Failed to download JAR: ${response.statusCode}`));
+      }
+    }).on('error', (err) => {
+      fs.unlinkSync(JAR_PATH);
+      reject(err);
+    });
   });
 }
 
@@ -78,7 +110,7 @@ function fenCharToKeyword(char) {
 }
 
 /**
- * Generate SVG using the chess-variants-display Clojure source
+ * Generate SVG using the chess-variants-display JAR file
  */
 function generateSVG(fen, outputPath) {
   const pieceMap = fenToPieceMap(fen);
@@ -106,8 +138,10 @@ function generateSVG(fen, outputPath) {
   
   try {
     console.log(`Generating SVG for position: ${fen}`);
+    // Use -Sdeps to add the JAR to the classpath
+    const depsEdn = `{:paths ["${JAR_PATH}"]}`;
     const svg = execSync(
-      `cd ${REPO_DIR} && clojure -M -e "(load-file \\"${scriptPath}\\")"`,
+      `clojure -Sdeps '${depsEdn}' -M -e "(load-file \\"${scriptPath}\\")"`,
       { encoding: 'utf8' }
     );
     
@@ -134,8 +168,8 @@ async function main() {
       fs.mkdirSync(OUTPUT_DIR, { recursive: true });
     }
     
-    // Setup chess-variants-display repository
-    setupRepository();
+    // Download chess-variants-display JAR
+    await downloadJar();
     
     // Generate SVGs for each position
     for (const [fen, filename] of Object.entries(POSITIONS)) {
