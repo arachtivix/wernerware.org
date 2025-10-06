@@ -99,10 +99,9 @@ function generateSVG(fen, outputPath) {
   
   try {
     console.log(`Generating SVG for position: ${fen}`);
-    // Use -Sdeps to add the JAR to the classpath
-    const depsEdn = `{:paths ["${JAR_PATH}"]}`;
+    // Use Babashka with JAR on classpath
     const svg = execSync(
-      `clojure -Sdeps '${depsEdn}' -M -e "(load-file \\"${scriptPath}\\")"`,
+      `bb -cp "${JAR_PATH}" "${scriptPath}"`,
       { encoding: 'utf8' }
     );
     
