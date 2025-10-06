@@ -17,6 +17,18 @@ const POSITIONS = {
   '4k3/8/8/8/8/8/8/RN2K3 w - - 0 1': 'knight-rook-vs-king.svg'
 };
 
+/**
+ * Check if Babashka is installed
+ */
+function isBabashkaInstalled() {
+  try {
+    execSync('bb --version', { stdio: 'ignore' });
+    return true;
+  } catch (error) {
+    return false;
+  }
+}
+
 
 /**
  * Generate SVG using Babashka with chess-variants-display dependency
@@ -47,6 +59,28 @@ async function main() {
     // Create output directory
     if (!fs.existsSync(OUTPUT_DIR)) {
       fs.mkdirSync(OUTPUT_DIR, { recursive: true });
+    }
+    
+    // Check if Babashka is installed
+    if (!isBabashkaInstalled()) {
+      console.log('Babashka not found. Checking for existing SVG files...');
+      
+      // Check if all required SVGs exist
+      const allSvgsExist = Object.values(POSITIONS).every(filename => {
+        const filePath = path.join(OUTPUT_DIR, filename);
+        return fs.existsSync(filePath);
+      });
+      
+      if (allSvgsExist) {
+        console.log('All required SVG files already exist. Skipping generation.');
+        console.log('To regenerate SVGs, install Babashka: https://babashka.org/');
+        return;
+      } else {
+        console.error('Error: Babashka is not installed and some SVG files are missing.');
+        console.error('Please install Babashka to generate the chess position SVGs:');
+        console.error('  https://babashka.org/');
+        process.exit(1);
+      }
     }
     
     // Generate SVGs for each position
