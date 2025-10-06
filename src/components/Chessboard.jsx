@@ -2,7 +2,7 @@ import './Chessboard.css'
 
 /**
  * Chessboard component that displays pre-generated SVG chessboards
- * SVGs are generated using chess-variants-display v0.0.46
+ * SVGs are generated using chess-variants-display v0.0.50
  * https://github.com/arachtivix/chess-variants-display
  */
 function Chessboard({ fen }) {
