@@ -10,7 +10,7 @@ const fs = require('fs');
 const path = require('path');
 const { execSync } = require('child_process');
 
-const CHESS_VARIANTS_VERSION = '0.0.46';
+const CHESS_VARIANTS_VERSION = '0.0.50';
 const JAR_URL = `https://github.com/arachtivix/chess-variants-display/releases/download/v${CHESS_VARIANTS_VERSION}/chess-variants-display-${CHESS_VARIANTS_VERSION}.jar`;
 const JAR_PATH = path.join(__dirname, `chess-variants-display-${CHESS_VARIANTS_VERSION}.jar`);
 const OUTPUT_DIR = path.join(__dirname, '..', 'public', 'chessboards');
@@ -69,56 +69,17 @@ function downloadJar() {
   });
 }
 
-/**
- * Parse FEN and convert to piece map for Clojure
- */
-function fenToPieceMap(fen) {
-  const [boardPart] = fen.split(' ');
-  const ranks = boardPart.split('/');
-  const pieces = [];
-  
-  for (let rankIndex = 0; rankIndex < ranks.length; rankIndex++) {
-    let fileIndex = 0;
-    for (let char of ranks[rankIndex]) {
-      if (isNaN(char)) {
-        // It's a piece - convert to Clojure keyword
-        const pieceKeyword = fenCharToKeyword(char);
-        pieces.push(`[${rankIndex} ${fileIndex}] :${pieceKeyword}`);
-        fileIndex++;
-      } else {
-        // It's a number indicating empty squares
-        fileIndex += parseInt(char);
-      }
-    }
-  }
-  
-  return `{${pieces.join(' ')}}`;
-}
 
-/**
- * Convert FEN piece character to chess-variants-display keyword
- */
-function fenCharToKeyword(char) {
-  const isWhite = char === char.toUpperCase();
-  const color = isWhite ? 'white' : 'black';
-  const pieceMap = {
-    'K': 'king', 'Q': 'queen', 'R': 'rook',
-    'B': 'bishop', 'N': 'knight', 'P': 'pawn'
-  };
-  const pieceName = pieceMap[char.toUpperCase()];
-  return `${color}-${pieceName}`;
-}
 
 /**
  * Generate SVG using the chess-variants-display JAR file
  */
 function generateSVG(fen, outputPath) {
-  const pieceMap = fenToPieceMap(fen);
-  
   // Create a Clojure script to generate the SVG with inline styles
+  // Use the library's fen->pieces function to parse FEN notation
   const clojureScript = `(require '[chess-variants-display.core :as cvd])
 
-(def pieces ${pieceMap})
+(def pieces (cvd/fen->pieces "${fen}"))
 
 (def svg-content (cvd/checkerboard-with-pieces 8 8 :dark pieces))
 
