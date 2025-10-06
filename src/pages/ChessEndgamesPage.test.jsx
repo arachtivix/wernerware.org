@@ -37,10 +37,11 @@ describe('ChessEndgamesPage', () => {
   })
 
   it('renders chessboard with pieces', () => {
-    render(<ChessEndgamesPage />)
-    // Check if chess pieces are present
-    const pieces = screen.getAllByText(/[♔♕♖♗♘♙♚♛♜♝♞♟]/)
-    expect(pieces.length).toBeGreaterThan(0)
+    const { container } = render(<ChessEndgamesPage />)
+    // Check if chessboard image is present (pieces are in the SVG file)
+    const chessboardImg = container.querySelector('img.chessboard')
+    expect(chessboardImg).toBeInTheDocument()
+    expect(chessboardImg).toHaveAttribute('src', '/chessboards/knight-rook-vs-king.svg')
   })
 
   it('renders endgame theory section', () => {

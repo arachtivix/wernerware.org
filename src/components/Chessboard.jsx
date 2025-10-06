@@ -1,64 +1,36 @@
 import './Chessboard.css'
 
-// Piece symbols for different pieces
-const PIECES = {
-  'K': '♔', 'Q': '♕', 'R': '♖', 'B': '♗', 'N': '♘', 'P': '♙',
-  'k': '♚', 'q': '♛', 'r': '♜', 'b': '♝', 'n': '♞', 'p': '♟'
-}
-
+/**
+ * Chessboard component that displays pre-generated SVG chessboards
+ * SVGs are generated using chess-variants-display v0.0.46
+ * https://github.com/arachtivix/chess-variants-display
+ */
 function Chessboard({ fen }) {
-  // Parse FEN notation to get board position
-  const parseFEN = (fen) => {
-    const [boardPart] = fen.split(' ')
-    const ranks = boardPart.split('/')
-    const board = []
-    
-    for (let rank of ranks) {
-      const row = []
-      for (let char of rank) {
-        if (isNaN(char)) {
-          // It's a piece
-          row.push(char)
-        } else {
-          // It's a number indicating empty squares
-          const emptySquares = parseInt(char)
-          for (let i = 0; i < emptySquares; i++) {
-            row.push('')
-          }
-        }
-      }
-      board.push(row)
-    }
-    
-    return board
+  // Map FEN positions to pre-generated SVG files
+  const FEN_TO_SVG = {
+    '4k3/8/8/8/8/8/8/RN2K3 w - - 0 1': '/chessboards/knight-rook-vs-king.svg'
   }
 
-  const board = parseFEN(fen)
-
-  const renderSquare = (piece, rank, file) => {
-    const isLightSquare = (rank + file) % 2 === 0
-    const squareClass = `square ${isLightSquare ? 'light' : 'dark'}`
-    
+  const svgPath = FEN_TO_SVG[fen]
+  
+  if (!svgPath) {
+    console.warn(`No pre-generated SVG for FEN: ${fen}`)
     return (
-      <div key={`${rank}-${file}`} className={squareClass}>
-        {piece && (
-          <span className={`piece ${piece === piece.toUpperCase() ? 'white' : 'black'}`}>
-            {PIECES[piece]}
-          </span>
-        )}
+      <div className="chessboard-container">
+        <div className="chessboard-error">
+          Chessboard not available for position: {fen}
+        </div>
       </div>
     )
   }
 
   return (
     <div className="chessboard-container">
-      <div className="chessboard">
-        {board.map((rank, rankIndex) =>
-          rank.map((piece, fileIndex) =>
-            renderSquare(piece, rankIndex, fileIndex)
-          )
-        )}
-      </div>
+      <img 
+        src={svgPath} 
+        alt={`Chess position: ${fen}`}
+        className="chessboard"
+      />
     </div>
   )
 }
